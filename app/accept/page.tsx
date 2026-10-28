@@ -1,6 +1,6 @@
 export default function AcceptPage() {
   return (
-    <div className="min-h-screen bg-sber-gray flex items-center justify-center">
+    <div className="flex-1 flex items-center justify-center bg-sber-gray">
       <h1 className="text-3xl font-bold text-sber-green">
         ...
       </h1>
