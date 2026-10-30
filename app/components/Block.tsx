@@ -1,6 +1,15 @@
-"use client";
+import {Personal} from '../components/Personal'
+import {Edo} from '../components/Edo'
 
-export function Block({code, name, isOpen, onToggle}) {
+type BlockProps = {
+    code: string;
+    name: string;
+    isOpen: boolean;
+    onToggle: () => void;
+    onToast: (message: string, type: 'success' | 'error') => void;
+};
+
+export function Block({code, name, isOpen, onToggle, onToast}: BlockProps) {
     return (
         <div className="mb-5 rounded-lg bg-white shadow-lg select-none scroll-m-24 ">
             <div className='p-6 flex items-center gap-4' onClick={onToggle}>
@@ -23,8 +32,13 @@ export function Block({code, name, isOpen, onToggle}) {
                 </div>
             </div>
             {isOpen && (
-                <div className="p-6 min-h-100">
-                    content
+                <div className="p-6 text-lg min-h-20">
+                    {code == 'EDO' && (
+                        <Edo onToast={onToast} />
+                    )}
+                    {code == 'Personal' && (
+                        <Personal />
+                    )}
                 </div>
             )}
         </div>
