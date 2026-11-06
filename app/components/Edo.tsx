@@ -6,8 +6,9 @@ import type { ShowToast } from '../types';
 
 type EdoProps = {
     onToast: ShowToast;
+    isSigned: boolean;
 };
-export function Edo({onToast}: EdoProps) {
+export function Edo({onToast, isSigned}: EdoProps) {
     return (
         <div>
             <button 
@@ -24,7 +25,7 @@ export function Edo({onToast}: EdoProps) {
                 />
                 <span>Соглашение о порядке взаимодействия с клиентами ООО СК «Сбербанк страхование жизни» по удаленным каналам обслуживания.pdf</span>
             </button>
-            <SubmitBtn type="edo" />
+            <SubmitBtn type="edo" disabled={isSigned} />
         </div>
     )
 }

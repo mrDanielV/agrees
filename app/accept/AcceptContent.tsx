@@ -89,6 +89,7 @@ export default function AcceptContent() {
             isOpen={openBlock == item.code?true:false}
             onToggle={() => handleToggle(item.code)}
             onToast = {showToast}
+            isSigned={agrees[item.code]}
           />
         ))}
 

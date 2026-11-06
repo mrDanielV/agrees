@@ -1,11 +1,15 @@
 import {SubmitBtn} from '../components/SubmitBtn'
 
-export function Personal() {
+type PersonalProps = {
+    isSigned: boolean;
+};
+
+export function Personal({isSigned}: PersonalProps) {
     return (
         <>
             Согласие на обработку персональных данных
 
-            <SubmitBtn type="personal" />
+            <SubmitBtn type="personal" disabled={isSigned} />
         </>
     )
 }

@@ -8,10 +8,10 @@ type BlockProps = {
     isOpen: boolean;
     onToggle: () => void;
     onToast: ShowToast;
-    onSign: () => void;
+    isSigned: boolean;
 };
 
-export function Block({code, name, isOpen, onToggle, onToast}: BlockProps) {
+export function Block({code, name, isOpen, onToggle, onToast, isSigned}: BlockProps) {
     return (
         <div className="mb-5 rounded-lg bg-white shadow-lg select-none scroll-m-24 ">
             <div className='p-6 flex items-center gap-4' onClick={onToggle}>
@@ -36,10 +36,10 @@ export function Block({code, name, isOpen, onToggle, onToast}: BlockProps) {
             {isOpen && (
                 <div className="p-6 text-lg min-h-20">
                     {code == 'edo' && (
-                        <Edo onToast={onToast} />
+                        <Edo onToast={onToast} isSigned={isSigned} />
                     )}
                     {code == 'personal' && (
-                        <Personal />
+                        <Personal isSigned={isSigned} />
                     )}
                 </div>
             )}
