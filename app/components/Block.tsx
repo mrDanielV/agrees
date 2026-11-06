@@ -16,7 +16,7 @@ export function Block({code, name, isOpen, onToggle, onToast, isSigned}: BlockPr
         <div className="mb-5 rounded-lg bg-white shadow-lg select-none scroll-m-24 ">
             <div className='p-6 flex items-center gap-4' onClick={onToggle}>
                 <div className='flex-1 text-sber-green font-bold'>{name}</div>
-                <div className="text-gray-300">
+                <div className={`transition-colors duration-300 ${isSigned ? 'text-sber-green' : 'text-gray-300'}`}>
                     <svg 
                         stroke="currentColor" 
                         fill="none" 
