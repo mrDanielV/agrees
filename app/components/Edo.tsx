@@ -2,8 +2,12 @@ import Image from 'next/image';
 
 
 import {SubmitBtn} from '../components/SubmitBtn'
+import type { ShowToast } from '../types';
 
-export function Edo({onToast}) {
+type EdoProps = {
+    onToast: ShowToast;
+};
+export function Edo({onToast}: EdoProps) {
     return (
         <div>
             <button 

@@ -1,7 +1,8 @@
 'use client';
 import { usePopup } from './PopupContext';
+import type { AcceptType } from '../types';
 
-export function SubmitBtn({type}: { type: 'personal' | 'edo' }) {
+export function SubmitBtn({type}: { type: AcceptType }) {
     const { popupOpen } = usePopup();
 
     return (

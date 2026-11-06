@@ -5,15 +5,29 @@ import { useSearchParams } from 'next/navigation';
 import {CodeInput} from '../components/CodeInput'
 
 import { checkCode } from '../lib/api';
+import type { AcceptType, ShowToast } from '../types';
 
-export function PopupCodeWin({onClose, showToast, setVerified, handleSign, type}) {
+type PopupCodeWinProps = {
+    onClose: () => void;
+    showToast: ShowToast;
+    setVerified: (verified: boolean) => void;
+    handleSign: (type: AcceptType) => void;
+    type: AcceptType | null;
+}
+export function PopupCodeWin({onClose, showToast, setVerified, handleSign, type}: PopupCodeWinProps) {
     const searchParams = useSearchParams();
     const key = searchParams.get('key');
     console.log(type);
 
+
     const onComplete = (code:string) => {
         if (code.length < 4) {
             showToast('Неверный формат кода СМС', 'error');
+            return;
+        }
+
+        if (!key || !type) {
+            showToast('Ссылка недействительна!', 'error');
             return;
         }
 

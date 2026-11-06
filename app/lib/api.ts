@@ -1,4 +1,19 @@
-export async function getAgrees(key: string) {
+import type { AcceptType, Settings } from '../types';
+
+export type ApiError = {
+    code: string;
+    msg: string;
+};
+
+export type GetAgreesResponse =
+    | { success: true; data: Settings }
+    | { success: false; error?: ApiError };
+
+export type CheckCodeResponse =
+    | { success: true }
+    | { success: false; error?: ApiError };
+
+export async function getAgrees(key: string): Promise<GetAgreesResponse> {
     const url = '/api/accept';
     const data = { key: key };
 
@@ -8,7 +23,7 @@ export async function getAgrees(key: string) {
 
     try {
         const response = await fetch(url, {
-            method: "POST", 
+            method: "POST",
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json",
@@ -21,7 +36,7 @@ export async function getAgrees(key: string) {
     }
 }
 
-export async function checkCode(key: string, type: string, code: string) {
+export async function checkCode(key: string, type: AcceptType, code: string): Promise<CheckCodeResponse> {
     const url = '/api/sign/check';
     const data = { key: key, type:type, code: code };
 
@@ -34,7 +49,7 @@ export async function checkCode(key: string, type: string, code: string) {
 
     try {
         const response = await fetch(url, {
-            method: "POST", 
+            method: "POST",
             body: JSON.stringify(data),
             headers: {
                 "Content-Type": "application/json",
@@ -46,3 +61,4 @@ export async function checkCode(key: string, type: string, code: string) {
         return {success: false};
     }
 }
+

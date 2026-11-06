@@ -1,19 +1,19 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import type { ToastType } from '../types';
 
 const DURATION = 2000;
 
 type ToastProps = {
   message: string;
-  type: 'success' | 'error';
+  type: ToastType;
   onClose: () => void;
 };
 
 export function Toast({ message, type, onClose }: ToastProps) {
     const [isVisible, setIsVisible] = useState(false);
     const onCloseRef = useRef(onClose);
-
     useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
 
     useEffect(() => {

@@ -1,11 +1,12 @@
 'use client';
 
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react';
+import type { AcceptType } from '../types';
 
 type PopupContextValue = {
     popupIsOpen: boolean;
-    popupType: 'personal' | 'edo' | null;
-    popupOpen: (type: 'personal' | 'edo') => void;
+    popupType: AcceptType | null;
+    popupOpen: (type: AcceptType) => void;
     popupClose: () => void;
     popupToggle: () => void;
 };
@@ -14,7 +15,7 @@ const PopupContext = createContext<PopupContextValue | null>(null);
 
 export function PopupProvider({ children }: { children: ReactNode }) {
     const [popupIsOpen, setIsOpen] = useState(false);
-    const [popupType, setPopupType] = useState<'personal' | 'edo' | null>(null);
+    const [popupType, setPopupType] = useState<AcceptType | null>(null);
 
     const value = useMemo<PopupContextValue>(
         () => ({

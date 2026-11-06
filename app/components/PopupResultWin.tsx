@@ -1,6 +1,9 @@
 //import {CodeInput} from '../components/CodeInput'
 
-export function PopupResultWin({onClose}) {
+type PopupResultWinProps = {
+    onClose: () => void;
+};
+export function PopupResultWin({onClose}: PopupResultWinProps) {
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center
                         bg-black/10 backdrop-blur-sm p-4">

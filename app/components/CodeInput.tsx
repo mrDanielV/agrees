@@ -1,9 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent, type ClipboardEvent, type KeyboardEvent } from 'react';
 
-export function CodeInput({onComplete}) {
+type CodeInputProps = {
+    onComplete: (code: string) => void;
+};
+
+export function CodeInput({onComplete}: CodeInputProps) {
+
     const cls = 'mr-3 h-12 w-10 rounded-lg text-xl text-center ring-2 ring-inset ring-gray-300 focus:ring-sber-green focus:outline-none border-none';
+
     const [code, setCode] = useState(['', '', '', '']);
     const refs = [
         useRef<HTMLInputElement>(null),
@@ -16,7 +22,7 @@ export function CodeInput({onComplete}) {
         refs[0].current?.focus()
     }, []);
 
-    const onCh = (event, index) => {
+    const onCh = (event: ChangeEvent<HTMLInputElement>, index: number) => {
         //const el = refs[index].current;
         const v = event.target.value;
         const regex = /^\d/; // или /^\d$/
@@ -39,7 +45,7 @@ export function CodeInput({onComplete}) {
         }
     }
 
-    const onKey = (event, index)=> {
+    const onKey = (event: KeyboardEvent<HTMLInputElement>, index: number)=> {
         const newCode = [...code];
 
         if(event.key == 'Backspace') {
@@ -54,7 +60,7 @@ export function CodeInput({onComplete}) {
         }
     }
 
-    const onPaste = (e) => {
+    const onPaste = (e: ClipboardEvent<HTMLInputElement>) => {
         e.preventDefault();
     }
 

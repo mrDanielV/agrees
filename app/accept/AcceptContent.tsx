@@ -9,36 +9,33 @@ import { usePopup } from '../components/PopupContext';
 import { Toast } from '../components/Toast';
 import { Spinner } from '../components/Spinner';
 import { getAgrees } from '../lib/api';
+import type { AcceptType, AgreesState, BlockItem, SettingsState, ToastData, ToastType } from '../types';
 
 export default function AcceptContent() {
-  const [openBlock, setOpenBlock] = useState<string | null>(null);
+  const [openBlock, setOpenBlock] = useState<AcceptType | null>(null);
   const { popupIsOpen, popupType, popupClose } = usePopup();
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [toast, setToast] = useState<ToastData>(null);
   const [verified, setVerified] = useState(false);
 
-  const blocks = [
-    {code: "Personal", name: "Согласие на обработку персональных данных"},
-    {code: "EDO", name: "Согласие о присоединении к ЭДО"}
+  const blocks: BlockItem[] = [
+    {code: "personal", name: "Согласие на обработку персональных данных"},
+    {code: "edo", name: "Согласие о присоединении к ЭДО"}
   ];
 
   const searchParams = useSearchParams();
   const key = searchParams.get('key'); // вернет 'demo' или null
 
-  const [settings, setSettings] = useState<{
-    agrees: { personal: boolean; edo: boolean };
-    personalText: string;
-  } | null>(null);
+  const [settings, setSettings] = useState<SettingsState>(null);
 
-  type Agrees = { edo: boolean; personal: boolean };
-  const [agrees, setAgrees] = useState<Agrees>({ edo: false, personal: false });
-  const handleSign = (type: 'personal' | 'edo') => {
+  const [agrees, setAgrees] = useState<AgreesState>({ edo: false, personal: false });
+  const handleSign = (type: AcceptType) => {
     setAgrees((prev) => ({
       ...prev,       // копируем старые значения
       [type]: true,  // меняем нужный флаг на true
     }));
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     if(!key) {
       return;
     }
@@ -52,8 +49,7 @@ export default function AcceptContent() {
       setSettings(data.data);
     });
   }, [key]);
-
-  const handleToggle = (code:string) => {
+  const handleToggle = (code: AcceptType) => {
       if (openBlock === code) {
           setOpenBlock(null)
       } else {
@@ -61,7 +57,7 @@ export default function AcceptContent() {
       }
   };
 
-  const showToast = (message: string, type: 'success' | 'error') => {
+  const showToast = (message: string, type: ToastType) => {
     setToast({ message, type });
   };
 
@@ -87,21 +83,21 @@ export default function AcceptContent() {
     <div className="flex-1 flex items-top justify-center bg-sber-gray p-3 pt-10">
       <div>
         <h1 className="text-xl font-bold text-gray-700 mb-5">В целях заключения договора, пожалуйста, ознакомьтесь с документами, заполните необходимые данные и подпишите</h1>
-        
+
         {blocks.map((item) => (
           <Block code={item.code} name={item.name} key={item.code}
-            isOpen={openBlock == item.code?true:false} 
-            onToggle={() => handleToggle(item.code)} 
+            isOpen={openBlock == item.code?true:false}
+            onToggle={() => handleToggle(item.code)}
             onToast = {showToast}
           />
         ))}
-        
+
       </div>
 
-      {popupIsOpen && <PopupCodeWin 
-        onClose={popupClose} 
-        showToast={showToast} 
-        setVerified={setVerified} 
+      {popupIsOpen && <PopupCodeWin
+        onClose={popupClose}
+        showToast={showToast}
+        setVerified={setVerified}
         handleSign={handleSign}
         type={popupType}
       />}
@@ -111,3 +107,4 @@ export default function AcceptContent() {
     </div>
   );
 }
+

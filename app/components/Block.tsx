@@ -1,12 +1,13 @@
 import {Personal} from '../components/Personal'
 import {Edo} from '../components/Edo'
+import type { AcceptType, ShowToast } from '../types';
 
 type BlockProps = {
-    code: string;
+    code: AcceptType;
     name: string;
     isOpen: boolean;
     onToggle: () => void;
-    onToast: (message: string, type: 'success' | 'error') => void;
+    onToast: ShowToast;
     onSign: () => void;
 };
 
@@ -34,10 +35,10 @@ export function Block({code, name, isOpen, onToggle, onToast}: BlockProps) {
             </div>
             {isOpen && (
                 <div className="p-6 text-lg min-h-20">
-                    {code == 'EDO' && (
+                    {code == 'edo' && (
                         <Edo onToast={onToast} />
                     )}
-                    {code == 'Personal' && (
+                    {code == 'personal' && (
                         <Personal />
                     )}
                 </div>
