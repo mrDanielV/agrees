@@ -26,7 +26,7 @@ export const handlers = [
   }),
 
   // Обработчик для проверки кода СМС
-  http.post('/api/sign/check', () => {
+  http.post('/api/sign/check', (code) => {
     return HttpResponse.json({ success: true });
   })
 ];

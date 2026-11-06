@@ -7,6 +7,7 @@ type BlockProps = {
     isOpen: boolean;
     onToggle: () => void;
     onToast: (message: string, type: 'success' | 'error') => void;
+    onSign: () => void;
 };
 
 export function Block({code, name, isOpen, onToggle, onToast}: BlockProps) {

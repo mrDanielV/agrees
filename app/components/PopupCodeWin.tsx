@@ -1,6 +1,35 @@
+'use client'
+
+//import { useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {CodeInput} from '../components/CodeInput'
 
-export function PopupCodeWin() {
+import { checkCode } from '../lib/api';
+
+export function PopupCodeWin({onClose, showToast, setVerified, handleSign, type}) {
+    const searchParams = useSearchParams();
+    const key = searchParams.get('key');
+    console.log(type);
+
+    const onComplete = (code:string) => {
+        if (code.length < 4) {
+            showToast('Неверный формат кода СМС', 'error');
+            return;
+        }
+
+        checkCode(key, type, code).then((data) => {
+            if (data.success === false) {
+                const msg = data.error?.msg || 'Ошибка!';
+                showToast(msg, 'error');
+                return;
+            }
+
+            setVerified(true);
+            handleSign(type);
+            onClose();
+        });
+    }
+
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center
                         bg-black/10 backdrop-blur-sm p-4">
@@ -11,10 +40,10 @@ export function PopupCodeWin() {
 
                 <div className="mb-4 text-lg text-gray-500">Введите код из СМС</div>
 
-                <CodeInput />
+                <CodeInput onComplete={onComplete} />
 
                 <div className="text-left mt-5">
-                    <button className="border focus:ring focus:ring-opacity-50 p-2.5 text-lg border-primary bg-sber-green text-white 
+                    <button className="border focus:ring focus:ring-opacity-50 p-2.5 px-5 text-lg border-primary bg-sber-green text-white 
                         hover:bg-sber-green focus:bg-sber-green hover:shadow-lg rounded-lg"
                         //onClick={popupOpen}
                         >Отправить повторно</button>

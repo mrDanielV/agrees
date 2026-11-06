@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-export function CodeInput() {
+export function CodeInput({onComplete}) {
     const cls = 'mr-3 h-12 w-10 rounded-lg text-xl text-center ring-2 ring-inset ring-gray-300 focus:ring-sber-green focus:outline-none border-none';
     const [code, setCode] = useState(['', '', '', '']);
     const refs = [
@@ -31,6 +31,11 @@ export function CodeInput() {
 
         if(index < 3) {
             refs[index + 1].current?.focus()
+        }
+
+        const fullCode = newCode.join('');
+        if(fullCode.length === 4) {
+            onComplete(newCode.join(''));
         }
     }
 

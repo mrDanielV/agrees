@@ -4,7 +4,8 @@ import { createContext, useContext, useMemo, useState, type ReactNode } from 're
 
 type PopupContextValue = {
     popupIsOpen: boolean;
-    popupOpen: () => void;
+    popupType: 'personal' | 'edo' | null;
+    popupOpen: (type: 'personal' | 'edo') => void;
     popupClose: () => void;
     popupToggle: () => void;
 };
@@ -13,12 +14,20 @@ const PopupContext = createContext<PopupContextValue | null>(null);
 
 export function PopupProvider({ children }: { children: ReactNode }) {
     const [popupIsOpen, setIsOpen] = useState(false);
+    const [popupType, setPopupType] = useState<'personal' | 'edo' | null>(null);
 
     const value = useMemo<PopupContextValue>(
         () => ({
             popupIsOpen,
-            popupOpen: () => setIsOpen(true),
-            popupClose: () => setIsOpen(false),
+            popupType,
+            popupOpen: (type) => {
+                setIsOpen(true);
+                setPopupType(type);
+            },
+            popupClose: () => {
+                setIsOpen(false);
+                setPopupType(null);
+            },
             popupToggle: () => setIsOpen((prev) => !prev),
         }),
         [popupIsOpen],

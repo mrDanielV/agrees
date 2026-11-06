@@ -5,7 +5,7 @@ export function Personal() {
         <>
             Согласие на обработку персональных данных
 
-            <SubmitBtn />
+            <SubmitBtn type="personal" />
         </>
     )
 }

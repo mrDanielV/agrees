@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {Block} from '../components/Block'
 import {PopupCodeWin} from '../components/PopupCodeWin'
+import {PopupResultWin} from '../components/PopupResultWin'
 import { usePopup } from '../components/PopupContext';
 import { Toast } from '../components/Toast';
 import { Spinner } from '../components/Spinner';
@@ -11,8 +12,9 @@ import { getAgrees } from '../lib/api';
 
 export default function AcceptContent() {
   const [openBlock, setOpenBlock] = useState<string | null>(null);
-  const { popupIsOpen, popupClose } = usePopup();
+  const { popupIsOpen, popupType, popupClose } = usePopup();
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
+  const [verified, setVerified] = useState(false);
 
   const blocks = [
     {code: "Personal", name: "Согласие на обработку персональных данных"},
@@ -26,6 +28,15 @@ export default function AcceptContent() {
     agrees: { personal: boolean; edo: boolean };
     personalText: string;
   } | null>(null);
+
+  type Agrees = { edo: boolean; personal: boolean };
+  const [agrees, setAgrees] = useState<Agrees>({ edo: false, personal: false });
+  const handleSign = (type: 'personal' | 'edo') => {
+    setAgrees((prev) => ({
+      ...prev,       // копируем старые значения
+      [type]: true,  // меняем нужный флаг на true
+    }));
+  };
 
   useEffect(() => { 
     if(!key) {
@@ -87,7 +98,14 @@ export default function AcceptContent() {
         
       </div>
 
-      {popupIsOpen && <PopupCodeWin onClose={popupClose} />}
+      {popupIsOpen && <PopupCodeWin 
+        onClose={popupClose} 
+        showToast={showToast} 
+        setVerified={setVerified} 
+        handleSign={handleSign}
+        type={popupType}
+      />}
+      {verified && <PopupResultWin onClose={() => setVerified(false)} />}
 
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </div>

@@ -20,7 +20,7 @@ export function Edo({onToast}) {
                 />
                 <span>Соглашение о порядке взаимодействия с клиентами ООО СК «Сбербанк страхование жизни» по удаленным каналам обслуживания.pdf</span>
             </button>
-            <SubmitBtn />
+            <SubmitBtn type="edo" />
         </div>
     )
 }
