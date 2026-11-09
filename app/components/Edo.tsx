@@ -25,7 +25,7 @@ export function Edo({onToast, isSigned}: EdoProps) {
                 />
                 <span>Соглашение о порядке взаимодействия с клиентами ООО СК «Сбербанк страхование жизни» по удаленным каналам обслуживания.pdf</span>
             </button>
-            <SubmitBtn type="edo" disabled={isSigned} />
+            <SubmitBtn type="edo" disabled={isSigned} showToast={onToast} />
         </div>
     )
 }

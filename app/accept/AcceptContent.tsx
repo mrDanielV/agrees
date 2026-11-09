@@ -22,11 +22,13 @@ export default function AcceptContent() {
     {code: "edo", name: "Согласие о присоединении к ЭДО"}
   ];
 
+  // API ключ
   const searchParams = useSearchParams();
-  const key = searchParams.get('key'); // вернет 'demo' или null
+  const key = searchParams.get('key'); // accept?key=<key>
 
   const [settings, setSettings] = useState<SettingsState>(null);
 
+  // Глобальное состояние согласий - подписано / нет
   const [agrees, setAgrees] = useState<AgreesState>({ edo: false, personal: false });
   const handleSign = (type: AcceptType) => {
     setAgrees((prev) => ({
@@ -43,7 +45,7 @@ export default function AcceptContent() {
       if (data.success === false) {
         showToast('Ссылка недействительна!', 'error');
         setSettings('error');
-        return; // прерываем выполнение
+        return; 
       }
 
       setSettings(data.data);

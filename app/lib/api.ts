@@ -9,7 +9,7 @@ export type GetAgreesResponse =
     | { success: true; data: Settings }
     | { success: false; error?: ApiError };
 
-export type CheckCodeResponse =
+export type SimpleResponse =
     | { success: true }
     | { success: false; error?: ApiError };
 
@@ -36,7 +36,26 @@ export async function getAgrees(key: string): Promise<GetAgreesResponse> {
     }
 }
 
-export async function checkCode(key: string, type: AcceptType, code: string): Promise<CheckCodeResponse> {
+export async function sendSign (key: string, type: AcceptType): Promise<SimpleResponse> {
+    const url = '/api/sign/send';
+    const data = { key: key, type:type };
+
+    try {
+        const response = await fetch(url, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        const json = await response.json();
+        return json;
+    } catch (error) {
+        return {success: false};
+    }
+}
+
+export async function checkCode(key: string, type: AcceptType, code: string): Promise<SimpleResponse> {
     const url = '/api/sign/check';
     const data = { key: key, type:type, code: code };
 

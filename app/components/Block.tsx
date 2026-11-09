@@ -39,7 +39,7 @@ export function Block({code, name, isOpen, onToggle, onToast, isSigned}: BlockPr
                         <Edo onToast={onToast} isSigned={isSigned} />
                     )}
                     {code == 'personal' && (
-                        <Personal isSigned={isSigned} />
+                        <Personal onToast={onToast} isSigned={isSigned} />
                     )}
                 </div>
             )}

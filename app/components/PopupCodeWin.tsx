@@ -1,9 +1,10 @@
 'use client'
 
-//import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {CodeInput} from '../components/CodeInput'
 
+import { sendSign } from '../lib/api';
 import { checkCode } from '../lib/api';
 import type { AcceptType, ShowToast } from '../types';
 
@@ -14,11 +15,68 @@ type PopupCodeWinProps = {
     handleSign: (type: AcceptType) => void;
     type: AcceptType | null;
 }
+
+const T = 30;
+
 export function PopupCodeWin({onClose, showToast, setVerified, handleSign, type}: PopupCodeWinProps) {
     const searchParams = useSearchParams();
     const key = searchParams.get('key');
-    console.log(type);
 
+    const [retryEnable, setRetryEnable] = useState<boolean>(true);
+    const [timeLabel, setTimeLabel] = useState<number>(T)
+    const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+    const setTimer = () => {
+        let timer = T;
+        if (timerRef.current) {
+            clearInterval(timerRef.current);
+        }
+        const updateTimer = setInterval(() => {
+            timer--;
+            setTimeLabel(timer);
+            if(timer < 1) {
+                setRetryEnable(true);
+                clearInterval(updateTimer);
+                timerRef.current = null;
+                setTimeLabel(T);
+            }
+            //console.log(timer);
+        }, 1000);
+    }
+    // чистим таймер при размонтировании попапа
+    useEffect(() => {
+        return () => {
+            if (timerRef.current) {
+                clearInterval(timerRef.current);
+                timerRef.current = null;
+            }
+        };
+    }, []);
+
+    const sendSignCall = (type: AcceptType) => {
+        if(!type || !key) {
+            return;
+        }
+        if(!retryEnable) {
+            return;
+        }
+        sendSign(key, type).then((data) => {
+            if(data.success) {
+                showToast('СМС отправлена', 'success');
+            } else {
+                showToast('Ошибка отправки СМС', 'error');
+            }
+        });
+    }
+
+    const retryClick = (type: AcceptType) => {
+        if(!retryEnable) {
+            return;
+        }
+        sendSignCall(type);
+        setRetryEnable(false);
+        setTimer();
+    }
 
     const onComplete = (code:string) => {
         if (code.length < 4) {
@@ -57,10 +115,15 @@ export function PopupCodeWin({onClose, showToast, setVerified, handleSign, type}
                 <CodeInput onComplete={onComplete} />
 
                 <div className="text-left mt-5">
-                    <button className="border focus:ring focus:ring-opacity-50 p-2.5 px-5 text-lg border-primary bg-sber-green text-white 
-                        hover:bg-sber-green focus:bg-sber-green hover:shadow-lg rounded-lg"
-                        //onClick={popupOpen}
-                        >Отправить повторно</button>
+                    <button
+                        type="button"
+                        className={`border focus:ring focus:ring-opacity-50 p-2.5 px-5 text-lg rounded-lg
+                            ${retryEnable
+                                ? 'border-primary bg-sber-green text-white hover:bg-sber-green focus:bg-sber-green hover:shadow-lg'
+                                : 'border-sber-green bg-gray-200 text-black cursor-not-allowed'}`}
+                        onClick={() => retryClick(type)}
+                        disabled={!retryEnable}
+                        >{retryEnable ? 'Отправить повторно' : 'Повторить через: ' + timeLabel + ' сек'}</button>
                 </div>
 
             </div>
