@@ -36,9 +36,9 @@ export async function getAgrees(key: string): Promise<GetAgreesResponse> {
     }
 }
 
-export async function sendSign (key: string, type: AcceptType): Promise<SimpleResponse> {
+export async function sendSign (key: string, type: AcceptType, sendData: JSON | null): Promise<SimpleResponse> {
     const url = '/api/sign/send';
-    const data = { key: key, type:type };
+    const data = { key: key, type:type, data: sendData };
 
     try {
         const response = await fetch(url, {

@@ -2,6 +2,7 @@ import Image from 'next/image';
 
 
 import {SubmitBtn} from '../components/SubmitBtn'
+import {useSign} from '../lib/useSign'
 import type { ShowToast } from '../types';
 
 type EdoProps = {
@@ -9,6 +10,8 @@ type EdoProps = {
     isSigned: boolean;
 };
 export function Edo({onToast, isSigned}: EdoProps) {
+    const { sign } = useSign(onToast);
+
     return (
         <div>
             <button 
@@ -25,7 +28,7 @@ export function Edo({onToast, isSigned}: EdoProps) {
                 />
                 <span>Соглашение о порядке взаимодействия с клиентами ООО СК «Сбербанк страхование жизни» по удаленным каналам обслуживания.pdf</span>
             </button>
-            <SubmitBtn type="edo" disabled={isSigned} showToast={onToast} />
+            <SubmitBtn agreeType="edo" disabled={isSigned} showToast={onToast} onClick={() => sign('edo', null)} />
         </div>
     )
 }

@@ -9,9 +9,10 @@ type BlockProps = {
     onToggle: () => void;
     onToast: ShowToast;
     isSigned: boolean;
+    initData: JSON;
 };
 
-export function Block({code, name, isOpen, onToggle, onToast, isSigned}: BlockProps) {
+export function Block({code, name, isOpen, onToggle, onToast, isSigned, initData}: BlockProps) {
     return (
         <div className="mb-5 rounded-lg bg-white shadow-lg select-none scroll-m-24 ">
             <div className='p-6 flex items-center gap-4' onClick={onToggle}>
@@ -39,7 +40,7 @@ export function Block({code, name, isOpen, onToggle, onToast, isSigned}: BlockPr
                         <Edo onToast={onToast} isSigned={isSigned} />
                     )}
                     {code == 'personal' && (
-                        <Personal onToast={onToast} isSigned={isSigned} />
+                        <Personal onToast={onToast} isSigned={isSigned} initData={initData} />
                     )}
                 </div>
             )}

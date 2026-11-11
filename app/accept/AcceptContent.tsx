@@ -92,6 +92,7 @@ export default function AcceptContent() {
             onToggle={() => handleToggle(item.code)}
             onToast = {showToast}
             isSigned={agrees[item.code]}
+            initData={settings}
           />
         ))}
 

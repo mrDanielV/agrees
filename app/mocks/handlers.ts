@@ -14,7 +14,7 @@ export const handlers = [
       success: true,
       data: {
         agrees: { personal: true, edo: true },
-        personalText: 'Текст согласия...',
+        personalText: 'Согласие на обработку персональных данных (мок-текст). Настоящим я даю согласие на обработку моих персональных данных в целях заключения договора.',
         type: 'personal'
       }
     });
