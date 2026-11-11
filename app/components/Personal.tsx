@@ -1,5 +1,7 @@
 import {SubmitBtn} from '../components/SubmitBtn'
 import {TextField} from '../components/TextField'
+import {SelectField} from '../components/SelectField'
+import {DateField} from '../components/DateField'
 import { useForm, SubmitHandler } from 'react-hook-form';
 import type { ShowToast } from '../types';
 import { z } from 'zod';
@@ -11,6 +13,11 @@ type PersonalProps = {
     isSigned: boolean;
     initData: JSON
 };
+
+const documentTypes = [
+  { value: 'passport', label: 'Паспорт РФ' },
+  { value: 'foreign', label: 'Иностранный паспорт' },
+];
 
 const personalSchema = z.object({
   lastName: z.string().min(2, 'Минимум 2 буквы').regex(/^[А-Яа-яЁё]+$/, 'Только кириллица'),
@@ -67,10 +74,10 @@ export function Personal({onToast, isSigned, initData}: PersonalProps) {
                 <div className="mb-5">
                     <label className="text-gray-600 mb-1 block">Реквизиты документа</label>
                     <div className="grid lg:grid-cols-4 gap-6">
-                        <TextField placeholder="Паспорт РФ" {...register('document.type')} error={errors.document?.type?.message} /> {/* селект, но пока инпут */}
+                        <SelectField placeholder="Паспорт РФ" options={documentTypes} {...register('document.type')} error={errors.document?.type?.message} /> {/* селект, но пока инпут */}
                         <TextField placeholder="Серия" {...register('document.seria')} error={errors.document?.seria?.message} />
                         <TextField placeholder="Номер" {...register('document.number')} error={errors.document?.number?.message} />
-                        <TextField placeholder="Дата выдачи" {...register('document.doi')} error={errors.document?.doi?.message} /> {/* Дата выдачи (пока инпут) */}
+                        <DateField placeholder="Дата выдачи" {...register('document.doi')} error={errors.document?.doi?.message} /> {/* Дата выдачи (пока инпут) */}
                     </div>
                 </div>
                 <div className="mb-5">
