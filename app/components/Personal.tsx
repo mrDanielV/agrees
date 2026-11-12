@@ -2,7 +2,7 @@ import {SubmitBtn} from '../components/SubmitBtn'
 import {TextField} from '../components/TextField'
 import {SelectField} from '../components/SelectField'
 import {DateField} from '../components/DateField'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import type { ShowToast } from '../types';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -45,6 +45,7 @@ export function Personal({onToast, isSigned, initData}: PersonalProps) {
     const {
         register,
         handleSubmit,
+        control,
         //watch,
         formState: { errors },
     } = useForm<PersonalFormData>({
@@ -53,7 +54,7 @@ export function Personal({onToast, isSigned, initData}: PersonalProps) {
     });
   
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data);
+        //console.log(data);
         sign('edo', data);        
     };
 
@@ -74,10 +75,22 @@ export function Personal({onToast, isSigned, initData}: PersonalProps) {
                 <div className="mb-5">
                     <label className="text-gray-600 mb-1 block">Реквизиты документа</label>
                     <div className="grid lg:grid-cols-4 gap-6">
-                        <SelectField placeholder="Паспорт РФ" options={documentTypes} {...register('document.type')} error={errors.document?.type?.message} /> {/* селект, но пока инпут */}
+                        <SelectField placeholder="Паспорт РФ" options={documentTypes} {...register('document.type')} error={errors.document?.type?.message} /> 
                         <TextField placeholder="Серия" {...register('document.seria')} error={errors.document?.seria?.message} />
                         <TextField placeholder="Номер" {...register('document.number')} error={errors.document?.number?.message} />
-                        <DateField placeholder="Дата выдачи" {...register('document.doi')} error={errors.document?.doi?.message} /> {/* Дата выдачи (пока инпут) */}
+                        { /*<DateField placeholder="Дата выдачи" {...register('document.doi')} error={errors.document?.doi?.message} /> */}
+                        <Controller
+                            name="document.doi"
+                            control={control}
+                            render={({ field }) => (
+                                <DateField
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={errors.document?.doi?.message}
+                                    placeholder="Дата выдачи"
+                                />
+                            )}
+                        />
                     </div>
                 </div>
                 <div className="mb-5">
