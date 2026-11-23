@@ -2,6 +2,7 @@ import {SubmitBtn} from '../components/SubmitBtn'
 import {TextField} from '../components/TextField'
 import {SelectField} from '../components/SelectField'
 import {DateField} from '../components/DateField'
+import {MaskedField} from '../components/MaskedField'
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import type { ShowToast } from '../types';
 import { z } from 'zod';
@@ -76,8 +77,36 @@ export function Personal({onToast, isSigned, initData}: PersonalProps) {
                     <label className="text-gray-600 mb-1 block">Реквизиты документа</label>
                     <div className="grid lg:grid-cols-4 gap-6">
                         <SelectField placeholder="Паспорт РФ" options={documentTypes} {...register('document.type')} error={errors.document?.type?.message} /> 
-                        <TextField placeholder="Серия" {...register('document.seria')} error={errors.document?.seria?.message} />
-                        <TextField placeholder="Номер" {...register('document.number')} error={errors.document?.number?.message} />
+                        { /* <TextField placeholder="Серия" {...register('document.seria')} error={errors.document?.seria?.message} /> */ }
+                        <Controller
+                            name="document.seria"
+                            control={control}
+                            render={({ field }) => (
+                                <MaskedField
+                                    mask="0000" // Маска для 4 цифр
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={errors.document?.seria?.message}
+                                    placeholder="Серия"
+                                    pchar="✻"
+                                />
+                            )}
+                        />
+                        <Controller
+                            name="document.number"
+                            control={control}
+                            render={({ field }) => (
+                                <MaskedField
+                                    mask="000000" // Маска для 4 цифр
+                                    value={field.value}
+                                    onChange={field.onChange}
+                                    error={errors.document?.seria?.message}
+                                    placeholder="Номер"
+                                    pchar="✻"
+                                />
+                            )}
+                        />
+                        { /* <TextField placeholder="Номер" {...register('document.number')} error={errors.document?.number?.message} /> */ }
                         { /*<DateField placeholder="Дата выдачи" {...register('document.doi')} error={errors.document?.doi?.message} /> */}
                         <Controller
                             name="document.doi"
